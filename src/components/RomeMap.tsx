@@ -85,9 +85,12 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
         </h2>
 
         {/* Illustrated Map */}
-        <div className="relative bg-gradient-to-br from-secondary/10 via-muted to-primary/10 rounded-2xl p-4 roman-border min-h-[500px]">
+        <div className="relative ancient-map-container burnt-edge rounded-2xl p-4 min-h-[500px] overflow-hidden">
+          {/* Sepia/aged paper overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-100/30 via-transparent to-amber-200/20 pointer-events-none rounded-2xl" />
+          
           {/* Decorative elements */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40" viewBox="0 0 100 100" preserveAspectRatio="none">
             {/* Tiber River */}
             <path
               d="M15 30 Q20 40, 25 50 Q30 60, 35 70 Q40 80, 45 90"
@@ -95,24 +98,24 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
               stroke="#5B8FAF"
               strokeWidth="2"
               strokeLinecap="round"
-              opacity="0.4"
+              opacity="0.6"
             />
             {/* Roads */}
             <path
               d="M20 45 L80 45"
               fill="none"
-              stroke="#D4C4A8"
+              stroke="#8B5A2B"
               strokeWidth="0.5"
               strokeDasharray="2,2"
-              opacity="0.5"
+              opacity="0.4"
             />
             <path
               d="M50 20 L50 80"
               fill="none"
-              stroke="#D4C4A8"
+              stroke="#8B5A2B"
               strokeWidth="0.5"
               strokeDasharray="2,2"
-              opacity="0.5"
+              opacity="0.4"
             />
           </svg>
 
@@ -147,15 +150,16 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
                       boxShadow: ['0 0 0 0 rgba(196, 160, 82, 0)', '0 0 0 8px rgba(196, 160, 82, 0.3)', '0 0 0 0 rgba(196, 160, 82, 0)']
                     } : undefined}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg ${
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-xl border-2 ${
                       isCompleted
-                        ? 'bg-gradient-to-br from-primary to-accent ring-2 ring-primary'
+                        ? 'bg-gradient-to-br from-primary to-accent border-amber-300'
                         : isUnlocked
-                        ? 'bg-card border-2 border-primary'
-                        : 'bg-muted border-2 border-border'
+                        ? 'bg-amber-50 border-primary hover:bg-amber-100'
+                        : 'bg-stone-200/80 border-stone-300'
                     }`}
                     style={{
                       backgroundColor: isCompleted ? landmark.color : undefined,
+                      boxShadow: isUnlocked ? '0 4px 12px rgba(139, 90, 43, 0.4)' : undefined,
                     }}
                   >
                     {isCompleted ? (
@@ -168,8 +172,10 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
                   </motion.div>
                   
                   {/* Label */}
-                  <span className={`mt-1 text-xs font-medium text-center max-w-[80px] leading-tight ${
-                    isUnlocked ? 'text-foreground' : 'text-muted-foreground'
+                  <span className={`mt-1 text-xs font-semibold text-center max-w-[80px] leading-tight px-1.5 py-0.5 rounded ${
+                    isUnlocked 
+                      ? 'text-amber-900 bg-amber-50/90 shadow-sm' 
+                      : 'text-stone-500 bg-stone-100/80'
                   }`}>
                     {landmark.name}
                   </span>
@@ -179,19 +185,29 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
           </div>
 
           {/* Legend */}
-          <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 text-xs">
+          <div className="absolute bottom-4 left-4 bg-amber-50/95 backdrop-blur-sm rounded-lg p-3 text-xs shadow-lg border border-amber-200/50">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-[8px]">✓</span>
-              <span className="text-muted-foreground">Completed</span>
+              <span className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-[8px]">&#10003;</span>
+              <span className="text-amber-900">Completed</span>
             </div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-4 h-4 rounded-full bg-card border border-primary" />
-              <span className="text-muted-foreground">Available</span>
+              <span className="w-4 h-4 rounded-full bg-amber-50 border border-primary" />
+              <span className="text-amber-900">Available</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-muted flex items-center justify-center text-[8px]">🔒</span>
-              <span className="text-muted-foreground">Locked</span>
+              <span className="w-4 h-4 rounded-full bg-amber-100 flex items-center justify-center text-[8px]">&#128274;</span>
+              <span className="text-amber-900">Locked</span>
             </div>
+          </div>
+          
+          {/* Compass rose decoration */}
+          <div className="absolute top-4 right-4 w-12 h-12 opacity-60">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#8B5A2B" strokeWidth="2" opacity="0.5" />
+              <path d="M50 10 L55 50 L50 90 L45 50 Z" fill="#8B5A2B" opacity="0.7" />
+              <path d="M10 50 L50 45 L90 50 L50 55 Z" fill="#A0522D" opacity="0.5" />
+              <text x="50" y="8" textAnchor="middle" fontSize="8" fill="#8B5A2B" fontWeight="bold">N</text>
+            </svg>
           </div>
         </div>
 
