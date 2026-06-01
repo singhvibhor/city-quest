@@ -83,39 +83,46 @@ export default function AdventureScreen({ landmarkId, onComplete, onBack }: Adve
       exit={{ opacity: 0 }}
       className="min-h-screen parchment-bg"
     >
-      {/* Header */}
-      <div 
-        className="relative h-48 flex items-end p-6"
-        style={{ 
-          background: `linear-gradient(to bottom, ${landmark.color}40, ${landmark.color}20)` 
-        }}
-      >
+      {/* Hero Image Header */}
+      <div className="relative h-64 overflow-hidden">
+        <img 
+          src={landmark.imageUrl} 
+          alt={landmark.name}
+          className="w-full h-full object-cover"
+        />
+        <div 
+          className="absolute inset-0"
+          style={{ 
+            background: `linear-gradient(to bottom, transparent 30%, ${landmark.color}90 100%)` 
+          }}
+        />
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onBack}
           className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium shadow-md"
         >
-          ← Back to Map
+          Back to Map
         </motion.button>
         
-        <div className="flex items-end gap-4">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg"
-            style={{ backgroundColor: landmark.color }}
-          >
-            {landmark.icon}
-          </motion.div>
-          <div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="font-display text-3xl text-foreground"
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <div className="flex items-end gap-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg bg-white/90"
             >
-              {landmark.name}
-            </motion.h1>
+              {landmark.icon}
+            </motion.div>
+            <div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="font-display text-3xl text-white drop-shadow-lg"
+              >
+                {landmark.name}
+              </motion.h1>
+            </div>
           </div>
         </div>
       </div>

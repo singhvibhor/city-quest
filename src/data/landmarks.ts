@@ -10,6 +10,7 @@ export interface Landmark {
   mapPosition: { x: number; y: number };
   color: string;
   icon: string;
+  imageUrl: string;
 }
 
 export const landmarks: Landmark[] = [
@@ -25,6 +26,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 85, y: 65 },
     color: '#C4A052',
     icon: '🏛️',
+    imageUrl: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80',
   },
   {
     id: 'roman-forum',
@@ -38,6 +40,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 72, y: 52 },
     color: '#8B7355',
     icon: '🏛️',
+    imageUrl: 'https://images.unsplash.com/photo-1604580864964-0462f5d5b1a8?w=800&q=80',
   },
   {
     id: 'pantheon',
@@ -51,6 +54,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 45, y: 38 },
     color: '#6B8E6B',
     icon: '⭕',
+    imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=800&q=80',
   },
   {
     id: 'trevi-fountain',
@@ -64,6 +68,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 55, y: 28 },
     color: '#5B8FAF',
     icon: '⛲',
+    imageUrl: 'https://images.unsplash.com/photo-1525874684015-58379d421a52?w=800&q=80',
   },
   {
     id: 'spanish-steps',
@@ -77,6 +82,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 62, y: 15 },
     color: '#E8B4A0',
     icon: '🪜',
+    imageUrl: 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=800&q=80',
   },
   {
     id: 'piazza-navona',
@@ -90,6 +96,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 35, y: 32 },
     color: '#D4A574',
     icon: '⛲',
+    imageUrl: 'https://images.unsplash.com/photo-1603228254119-e6a4d095dc59?w=800&q=80',
   },
   {
     id: 'vatican',
@@ -103,6 +110,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 12, y: 42 },
     color: '#F5E6C8',
     icon: '⛪',
+    imageUrl: 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=800&q=80',
   },
   {
     id: 'castel-santangelo',
@@ -116,6 +124,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 18, y: 25 },
     color: '#A0856C',
     icon: '🏰',
+    imageUrl: 'https://images.unsplash.com/photo-1569587112025-0d460e81a126?w=800&q=80',
   },
   {
     id: 'trastevere',
@@ -129,6 +138,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 22, y: 68 },
     color: '#C17F59',
     icon: '🏘️',
+    imageUrl: 'https://images.unsplash.com/photo-1529260830199-42c24126f198?w=800&q=80',
   },
   {
     id: 'campo-de-fiori',
@@ -142,6 +152,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 38, y: 55 },
     color: '#E25822',
     icon: '🍅',
+    imageUrl: 'https://images.unsplash.com/photo-1533633947-68b73a1d3e9b?w=800&q=80',
   },
   {
     id: 'villa-borghese',
@@ -155,6 +166,7 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 75, y: 10 },
     color: '#7B9E6B',
     icon: '🌳',
+    imageUrl: 'https://images.unsplash.com/photo-1555992828-ca4dbe41d294?w=800&q=80',
   },
   {
     id: 'tiber-river',
@@ -168,5 +180,6 @@ export const landmarks: Landmark[] = [
     mapPosition: { x: 28, y: 82 },
     color: '#5B8FAF',
     icon: '🌊',
+    imageUrl: 'https://images.unsplash.com/photo-1542820229-081e0c12af0b?w=800&q=80',
   },
 ];
