@@ -8,6 +8,7 @@ import Passport from './components/Passport';
 import BadgeGallery from './components/BadgeGallery';
 import ParentCorner from './components/ParentCorner';
 import RewardModal from './components/RewardModal';
+import PlayerSelect, { SavedPlayer } from './components/PlayerSelect';
 import { landmarks } from './data/landmarks';
 import { badges, Badge } from './data/badges';
 
@@ -18,9 +19,10 @@ export interface GameState {
   completedLandmarks: string[];
   earnedBadges: string[];
   stamps: string[];
-  currentScreen: 'welcome' | 'setup' | 'map' | 'adventure' | 'passport' | 'badges' | 'parent';
+  currentScreen: 'welcome' | 'setup' | 'map' | 'adventure' | 'passport' | 'badges' | 'parent' | 'player-select';
   currentLandmark: string | null;
   soundEnabled: boolean;
+  currentPlayerId: string | null;
 }
 
 const initialState: GameState = {
@@ -33,9 +35,26 @@ const initialState: GameState = {
   currentScreen: 'welcome',
   currentLandmark: null,
   soundEnabled: true,
+  currentPlayerId: null,
 };
 
+// Helper to generate unique player ID
+const generatePlayerId = () => `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
 function App() {
+  // Load saved players from localStorage
+  const [savedPlayers, setSavedPlayers] = useState<SavedPlayer[]>(() => {
+    const saved = localStorage.getItem('romeQuestPlayers');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
   const [gameState, setGameState] = useState<GameState>(() => {
     const saved = localStorage.getItem('romeQuestState');
     if (saved) {
@@ -60,6 +79,38 @@ function App() {
   useEffect(() => {
     localStorage.setItem('romeQuestState', JSON.stringify(gameState));
   }, [gameState]);
+
+  // Save players to localStorage
+  useEffect(() => {
+    localStorage.setItem('romeQuestPlayers', JSON.stringify(savedPlayers));
+  }, [savedPlayers]);
+
+  // Save current player progress to savedPlayers when state changes
+  useEffect(() => {
+    if (gameState.currentPlayerId && gameState.explorerName) {
+      setSavedPlayers(prev => {
+        const existingIndex = prev.findIndex(p => p.id === gameState.currentPlayerId);
+        const playerData: SavedPlayer = {
+          id: gameState.currentPlayerId!,
+          explorerName: gameState.explorerName,
+          avatar: gameState.avatar,
+          coins: gameState.coins,
+          completedLandmarks: gameState.completedLandmarks,
+          earnedBadges: gameState.earnedBadges,
+          stamps: gameState.stamps,
+          lastPlayed: Date.now(),
+        };
+        
+        if (existingIndex >= 0) {
+          const updated = [...prev];
+          updated[existingIndex] = playerData;
+          return updated;
+        } else {
+          return [...prev, playerData];
+        }
+      });
+    }
+  }, [gameState.coins, gameState.completedLandmarks, gameState.earnedBadges, gameState.stamps, gameState.explorerName, gameState.avatar, gameState.currentPlayerId]);
 
   // Check for badge unlocks
   const checkBadgeUnlocks = (newState: GameState): string[] => {
@@ -126,11 +177,13 @@ function App() {
   };
 
   const handleSetupComplete = (name: string, avatar: string, _snack?: string) => {
+    const playerId = gameState.currentPlayerId || generatePlayerId();
     setGameState(prev => ({
       ...prev,
       explorerName: name,
       avatar,
       currentScreen: 'map',
+      currentPlayerId: playerId,
     }));
   };
 
@@ -199,7 +252,42 @@ function App() {
   };
 
   const handleChangePlayer = () => {
-    setGameState(prev => ({ ...prev, currentScreen: 'setup' }));
+    setGameState(prev => ({ ...prev, currentScreen: 'player-select' }));
+  };
+
+  const handleSelectPlayer = (player: SavedPlayer) => {
+    setGameState({
+      ...initialState,
+      explorerName: player.explorerName,
+      avatar: player.avatar,
+      coins: player.coins,
+      completedLandmarks: player.completedLandmarks,
+      earnedBadges: player.earnedBadges,
+      stamps: player.stamps,
+      currentScreen: 'map',
+      currentPlayerId: player.id,
+      soundEnabled: gameState.soundEnabled,
+    });
+  };
+
+  const handleCreateNewPlayer = () => {
+    setGameState({
+      ...initialState,
+      currentScreen: 'setup',
+      currentPlayerId: null,
+      soundEnabled: gameState.soundEnabled,
+    });
+  };
+
+  const handleDeletePlayer = (playerId: string) => {
+    setSavedPlayers(prev => prev.filter(p => p.id !== playerId));
+    // If deleting current player, reset to initial state
+    if (gameState.currentPlayerId === playerId) {
+      setGameState({
+        ...initialState,
+        soundEnabled: gameState.soundEnabled,
+      });
+    }
   };
 
   const renderScreen = () => {
@@ -253,6 +341,16 @@ function App() {
             onBack={() => handleNavigate('map')}
             onResetProgress={handleResetProgress}
             onToggleSound={handleToggleSound}
+          />
+        );
+      case 'player-select':
+        return (
+          <PlayerSelect
+            players={savedPlayers}
+            onSelectPlayer={handleSelectPlayer}
+            onCreateNew={handleCreateNewPlayer}
+            onDeletePlayer={handleDeletePlayer}
+            onBack={() => handleNavigate('map')}
           />
         );
       default:
