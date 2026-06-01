@@ -17,9 +17,9 @@ const AVATAR_COLORS = [
 
 export default function TeamSetup({ existingTeams, onTeamCreated, onSelectTeam }: TeamSetupProps) {
   const [mode, setMode] = useState<'select' | 'create'>(existingTeams.length > 0 ? 'select' : 'create');
-  const [teamName, setTeamName] = useState('');
+  const [teamName, setTeamName] = useState('The Eternal Explorers');
   const [members, setMembers] = useState<TeamMember[]>([
-    { id: '1', name: '', avatar: 'A' }
+    { id: '1', name: 'Explorer 1', avatar: 'A' }
   ]);
 
   const addMember = () => {
