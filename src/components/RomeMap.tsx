@@ -23,30 +23,8 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
     return () => clearInterval(interval);
   }, []);
 
-  // Determine which landmarks are unlocked (first one + any adjacent to completed)
-  const getUnlockedLandmarks = () => {
-    if (completedLandmarks.length === 0) {
-      return [landmarks[0].id]; // Start with Colosseum
-    }
-    
-    const unlocked = new Set(completedLandmarks);
-    
-    // Unlock next landmarks based on completion
-    completedLandmarks.forEach((completedId) => {
-      const completedIndex = landmarks.findIndex(l => l.id === completedId);
-      if (completedIndex < landmarks.length - 1) {
-        unlocked.add(landmarks[completedIndex + 1].id);
-      }
-      // Also unlock some nearby landmarks for variety
-      if (completedIndex > 0) {
-        unlocked.add(landmarks[completedIndex - 1].id);
-      }
-    });
-    
-    return Array.from(unlocked);
-  };
-
-  const unlockedLandmarks = getUnlockedLandmarks();
+  // All landmarks are unlocked - explore in any order!
+  const unlockedLandmarks = landmarks.map(l => l.id);
 
   return (
     <motion.div
