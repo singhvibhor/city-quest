@@ -85,7 +85,7 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
         </h2>
 
         {/* Illustrated Map */}
-        <div className="relative ancient-map-container burnt-edge rounded-2xl p-4 min-h-[500px] overflow-hidden">
+        <div className="relative ancient-map-container burnt-edge rounded-2xl p-6 min-h-[650px] overflow-hidden">
           {/* Sepia/aged paper overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-100/30 via-transparent to-amber-200/20 pointer-events-none rounded-2xl" />
           
@@ -120,7 +120,7 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
           </svg>
 
           {/* Landmark pins */}
-          <div className="relative h-[500px]">
+          <div className="relative h-[620px]">
             {landmarks.map((landmark, index) => {
               const isCompleted = completedLandmarks.includes(landmark.id);
               const isUnlocked = unlockedLandmarks.includes(landmark.id);
