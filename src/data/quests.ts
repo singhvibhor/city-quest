@@ -287,7 +287,7 @@ export const quests: Quest[] = [
     points: 110,
     coordinates: { lat: 41.8956, lng: 12.4722 },
     mapPosition: { x: 38, y: 55 },
-    imageUrl: 'https://images.unsplash.com/photo-1549464694-5c6c3b4c6156?w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=800&q=80',
     resources: [
       { title: 'Giordano Bruno and the Infinite Universe', url: 'https://plato.stanford.edu/entries/bruno/', type: 'article' },
       { title: 'The Swerve: How the World Became Modern', url: 'https://www.goodreads.com/book/show/10352002-the-swerve', type: 'book' },
