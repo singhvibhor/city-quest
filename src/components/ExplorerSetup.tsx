@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Mascot from './Mascot';
 
 interface ExplorerSetupProps {
-  onComplete: (name: string, avatar: string, snack: string) => void;
+  onComplete: (name: string, avatar: string, snack?: string) => void;
 }
 
 const avatars = [

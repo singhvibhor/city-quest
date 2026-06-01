@@ -2,14 +2,18 @@ import { motion } from 'framer-motion';
 import { landmarks } from '../data/landmarks';
 import { getRandomTip, CultureTip } from '../data/cultureTips';
 import { useState, useEffect } from 'react';
+import type { GameState } from '../App';
+import ProgressHeader from './ProgressHeader';
 
 interface RomeMapProps {
-  completedLandmarks: string[];
-  onLandmarkClick: (landmarkId: string) => void;
+  gameState: GameState;
+  onSelectLandmark: (landmarkId: string) => void;
+  onNavigate: (screen: GameState['currentScreen']) => void;
 }
 
-export default function RomeMap({ completedLandmarks, onLandmarkClick }: RomeMapProps) {
+export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: RomeMapProps) {
   const [currentTip, setCurrentTip] = useState<CultureTip | null>(null);
+  const { completedLandmarks } = gameState;
 
   useEffect(() => {
     setCurrentTip(getRandomTip());
@@ -45,8 +49,16 @@ export default function RomeMap({ completedLandmarks, onLandmarkClick }: RomeMap
   const unlockedLandmarks = getUnlockedLandmarks();
 
   return (
-    <div className="flex-1 p-4 pb-24 overflow-auto">
-      <div className="max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen parchment-bg flex flex-col"
+    >
+      <ProgressHeader gameState={gameState} onNavigate={onNavigate} />
+      
+      <div className="flex-1 p-4 pb-24 overflow-auto">
+        <div className="max-w-4xl mx-auto">
         {/* Today's Rome Tip */}
         {currentTip && (
           <motion.div
@@ -118,7 +130,7 @@ export default function RomeMap({ completedLandmarks, onLandmarkClick }: RomeMap
                   transition={{ delay: index * 0.05 }}
                   whileHover={isUnlocked ? { scale: 1.15, y: -5 } : undefined}
                   whileTap={isUnlocked ? { scale: 0.95 } : undefined}
-                  onClick={() => isUnlocked && onLandmarkClick(landmark.id)}
+                  onClick={() => isUnlocked && onSelectLandmark(landmark.id)}
                   disabled={!isUnlocked}
                   className={`absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all ${
                     isUnlocked ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
@@ -189,5 +201,6 @@ export default function RomeMap({ completedLandmarks, onLandmarkClick }: RomeMap
         </p>
       </div>
     </div>
+    </motion.div>
   );
 }
