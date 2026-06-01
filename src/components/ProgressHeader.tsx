@@ -5,11 +5,13 @@ import { badges } from '../data/badges';
 interface ProgressHeaderProps {
   gameState: GameState;
   onNavigate: (screen: GameState['currentScreen']) => void;
+  onChangePlayer?: () => void;
 }
 
 export default function ProgressHeader({
   gameState,
   onNavigate,
+  onChangePlayer,
 }: ProgressHeaderProps) {
   const { explorerName, coins, earnedBadges } = gameState;
   const badgeCount = earnedBadges.length;
@@ -23,14 +25,23 @@ export default function ProgressHeader({
     >
       <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
         {/* Explorer name */}
-        <div className="flex items-center gap-2 min-w-0">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onChangePlayer}
+          className="flex items-center gap-2 min-w-0 hover:bg-muted/50 rounded-full px-2 py-1 transition-colors"
+          title="Change explorer"
+        >
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
             {explorerName.charAt(0).toUpperCase()}
           </div>
           <span className="font-medium text-foreground truncate hidden sm:block">
             {explorerName}
           </span>
-        </div>
+          <svg className="w-4 h-4 text-muted-foreground hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+        </motion.button>
 
         {/* Progress bar */}
         <div className="flex-1 max-w-xs hidden md:block">

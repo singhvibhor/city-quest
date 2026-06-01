@@ -100,7 +100,7 @@ export default function AdventureScreen({ landmarkId, onComplete, onBack }: Adve
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onBack}
-          className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium shadow-md"
+          className="absolute top-4 left-4 bg-white px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-stone-200"
         >
           Back to Map
         </motion.button>

@@ -9,9 +9,10 @@ interface RomeMapProps {
   gameState: GameState;
   onSelectLandmark: (landmarkId: string) => void;
   onNavigate: (screen: GameState['currentScreen']) => void;
+  onChangePlayer?: () => void;
 }
 
-export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: RomeMapProps) {
+export default function RomeMap({ gameState, onSelectLandmark, onNavigate, onChangePlayer }: RomeMapProps) {
   const [currentTip, setCurrentTip] = useState<CultureTip | null>(null);
   const { completedLandmarks } = gameState;
 
@@ -33,7 +34,7 @@ export default function RomeMap({ gameState, onSelectLandmark, onNavigate }: Rom
       exit={{ opacity: 0 }}
       className="min-h-screen parchment-bg flex flex-col"
     >
-      <ProgressHeader gameState={gameState} onNavigate={onNavigate} />
+      <ProgressHeader gameState={gameState} onNavigate={onNavigate} onChangePlayer={onChangePlayer} />
       
       <div className="flex-1 p-4 pb-24 overflow-auto">
         <div className="max-w-4xl mx-auto">

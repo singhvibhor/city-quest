@@ -198,6 +198,10 @@ function App() {
     setGameState(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }));
   };
 
+  const handleChangePlayer = () => {
+    setGameState(prev => ({ ...prev, currentScreen: 'setup' }));
+  };
+
   const renderScreen = () => {
     switch (gameState.currentScreen) {
       case 'welcome':
@@ -216,6 +220,7 @@ function App() {
             gameState={gameState}
             onSelectLandmark={handleSelectLandmark}
             onNavigate={handleNavigate}
+            onChangePlayer={handleChangePlayer}
           />
         );
       case 'adventure':
