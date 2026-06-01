@@ -1,13 +1,11 @@
 import { motion } from 'framer-motion';
 import { landmarks } from '../data/landmarks';
 import { badges, getExplorerTitle } from '../data/badges';
+import type { GameState } from '../App';
 
 interface PassportProps {
-  explorerName: string;
-  avatar: string;
-  completedLandmarks: string[];
-  coins: number;
-  onClose: () => void;
+  gameState: GameState;
+  onBack: () => void;
 }
 
 const avatarIcons: Record<string, string> = {
@@ -18,13 +16,8 @@ const avatarIcons: Record<string, string> = {
   architect: '🏛️',
 };
 
-export default function Passport({
-  explorerName,
-  avatar,
-  completedLandmarks,
-  coins,
-  onClose,
-}: PassportProps) {
+export default function Passport({ gameState, onBack }: PassportProps) {
+  const { explorerName, avatar, completedLandmarks, coins } = gameState;
   const earnedBadges = badges.filter(b => completedLandmarks.includes(b.landmarkId));
   const title = getExplorerTitle(earnedBadges.length);
 
@@ -34,7 +27,7 @@ export default function Passport({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 overflow-auto"
-      onClick={onClose}
+      onClick={onBack}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
@@ -178,7 +171,7 @@ export default function Passport({
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={onClose}
+            onClick={onBack}
             className="btn btn-primary w-full"
           >
             Close Passport

@@ -3,9 +3,11 @@ import Mascot from './Mascot';
 
 interface WelcomeScreenProps {
   onStart: () => void;
+  hasExistingProgress: boolean;
+  explorerName: string;
 }
 
-export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
+export default function WelcomeScreen({ onStart, hasExistingProgress, explorerName }: WelcomeScreenProps) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 parchment-bg">
       {/* Decorative columns */}
@@ -106,7 +108,9 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             Ciao! I&apos;m Marco the Map Mouse!
           </p>
           <p className="text-muted-foreground mt-2">
-            Ready to explore ancient Rome? Collect badges, solve clues, and become a true Rome Explorer!
+            {hasExistingProgress 
+              ? `Welcome back, ${explorerName}! Continue your adventure!`
+              : 'Ready to explore ancient Rome? Collect badges, solve clues, and become a true Rome Explorer!'}
           </p>
         </motion.div>
 
@@ -120,7 +124,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           onClick={onStart}
           className="btn btn-primary text-xl px-10 py-4 coin-shadow"
         >
-          Start Your Adventure!
+          {hasExistingProgress ? 'Continue Adventure!' : 'Start Your Adventure!'}
         </motion.button>
 
         {/* Decorative coins */}

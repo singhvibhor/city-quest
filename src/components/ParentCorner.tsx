@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import type { GameState } from '../App';
 
 interface ParentCornerProps {
-  onClose: () => void;
+  gameState: GameState;
+  onBack: () => void;
+  onResetProgress: () => void;
+  onToggleSound: () => void;
 }
 
 const scavengerHuntItems = [
@@ -25,8 +29,8 @@ const conversationStarters = [
   'What would you tell a friend about Rome?',
 ];
 
-export default function ParentCorner({ onClose }: ParentCornerProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'hunt' | 'talk' | 'tips'>('overview');
+export default function ParentCorner({ gameState, onBack, onResetProgress, onToggleSound }: ParentCornerProps) {
+  const [activeTab, setActiveTab] = useState<'overview' | 'hunt' | 'talk' | 'tips' | 'settings'>('overview');
 
   return (
     <motion.div
@@ -34,7 +38,7 @@ export default function ParentCorner({ onClose }: ParentCornerProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 overflow-auto"
-      onClick={onClose}
+      onClick={onBack}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
@@ -60,6 +64,7 @@ export default function ParentCorner({ onClose }: ParentCornerProps) {
             { id: 'hunt', label: 'Scavenger Hunt' },
             { id: 'talk', label: 'Talk About It' },
             { id: 'tips', label: 'Safety Tips' },
+            { id: 'settings', label: 'Settings' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -206,6 +211,44 @@ export default function ParentCorner({ onClose }: ParentCornerProps) {
               </div>
             </div>
           )}
+
+          {activeTab === 'settings' && (
+            <div className="space-y-4">
+              <div className="bg-muted/30 rounded-xl p-4">
+                <h3 className="font-semibold text-foreground mb-2">Sound</h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-card-foreground">Sound Effects</span>
+                  <button
+                    onClick={onToggleSound}
+                    className={`w-12 h-6 rounded-full transition-colors ${
+                      gameState.soundEnabled ? 'bg-primary' : 'bg-muted'
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-white transform transition-transform ${
+                        gameState.soundEnabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-muted/30 rounded-xl p-4">
+                <h3 className="font-semibold text-foreground mb-2">Progress</h3>
+                <div className="space-y-2 text-sm text-card-foreground">
+                  <p>Landmarks completed: {gameState.completedLandmarks.length}/12</p>
+                  <p>Coins earned: {gameState.coins}</p>
+                  <p>Badges earned: {gameState.earnedBadges.length}</p>
+                </div>
+                <button
+                  onClick={onResetProgress}
+                  className="mt-4 w-full py-2 px-4 bg-destructive/10 text-destructive rounded-lg text-sm font-medium hover:bg-destructive/20 transition-colors"
+                >
+                  Reset All Progress
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Close button */}
@@ -213,7 +256,7 @@ export default function ParentCorner({ onClose }: ParentCornerProps) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={onClose}
+            onClick={onBack}
             className="btn btn-secondary w-full"
           >
             Close

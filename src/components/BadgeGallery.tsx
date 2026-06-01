@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
 import { badges } from '../data/badges';
 import { landmarks } from '../data/landmarks';
+import type { GameState } from '../App';
 
 interface BadgeGalleryProps {
-  completedLandmarks: string[];
-  onClose: () => void;
+  gameState: GameState;
+  onBack: () => void;
 }
 
-export default function BadgeGallery({ completedLandmarks, onClose }: BadgeGalleryProps) {
+export default function BadgeGallery({ gameState, onBack }: BadgeGalleryProps) {
+  const { completedLandmarks } = gameState;
   const earnedBadges = badges.filter(b => completedLandmarks.includes(b.landmarkId));
   const lockedBadges = badges.filter(b => !completedLandmarks.includes(b.landmarkId));
 
@@ -17,7 +19,7 @@ export default function BadgeGallery({ completedLandmarks, onClose }: BadgeGalle
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 overflow-auto"
-      onClick={onClose}
+      onClick={onBack}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
@@ -135,7 +137,7 @@ export default function BadgeGallery({ completedLandmarks, onClose }: BadgeGalle
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={onClose}
+            onClick={onBack}
             className="btn btn-primary w-full"
           >
             Close Gallery

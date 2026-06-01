@@ -27,8 +27,6 @@ export default function ParkPicnicQuest({ onComplete }: GameProps) {
   const [feedback, setFeedback] = useState<string>('');
   const [showResults, setShowResults] = useState(false);
 
-  const goodItems = picnicItems.filter(i => i.isGood);
-
   const handleSelect = (itemId: string) => {
     if (showResults) return;
     
