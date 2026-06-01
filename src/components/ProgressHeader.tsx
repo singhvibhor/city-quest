@@ -1,22 +1,20 @@
 import { motion } from 'framer-motion';
+import type { GameState } from '../App';
+import { badges } from '../data/badges';
 
 interface ProgressHeaderProps {
-  explorerName: string;
-  coins: number;
-  badgeCount: number;
-  totalBadges: number;
-  onPassportClick: () => void;
-  onBadgeClick: () => void;
+  gameState: GameState;
+  onNavigate: (screen: GameState['currentScreen']) => void;
 }
 
 export default function ProgressHeader({
-  explorerName,
-  coins,
-  badgeCount,
-  totalBadges,
-  onPassportClick,
-  onBadgeClick,
+  gameState,
+  onNavigate,
 }: ProgressHeaderProps) {
+  const { explorerName, coins, earnedBadges } = gameState;
+  const badgeCount = earnedBadges.length;
+  const totalBadges = badges.length;
+
   return (
     <motion.header
       initial={{ y: -50, opacity: 0 }}
@@ -68,7 +66,7 @@ export default function ProgressHeader({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onBadgeClick}
+            onClick={() => onNavigate('badges')}
             className="flex items-center gap-1 bg-secondary/10 px-3 py-1.5 rounded-full hover:bg-secondary/20 transition-colors"
             aria-label={`View badges. ${badgeCount} of ${totalBadges} earned`}
           >
@@ -80,7 +78,7 @@ export default function ProgressHeader({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onPassportClick}
+            onClick={() => onNavigate('passport')}
             className="flex items-center gap-1 bg-accent/10 px-3 py-1.5 rounded-full hover:bg-accent/20 transition-colors"
             aria-label="Open Explorer Passport"
           >

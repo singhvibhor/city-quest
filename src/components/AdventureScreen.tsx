@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Landmark } from '../data/landmarks';
+import { landmarks } from '../data/landmarks';
+import type { GameState } from '../App';
 import ColosseumGearMatch from '../games/ColosseumGearMatch';
 import ForumBuilder from '../games/ForumBuilder';
 import PantheonOculus from '../games/PantheonOculus';
@@ -15,16 +16,31 @@ import ParkPicnicQuest from '../games/ParkPicnicQuest';
 import TiberBridgeBuilder from '../games/TiberBridgeBuilder';
 
 interface AdventureScreenProps {
-  landmark: Landmark;
-  onComplete: () => void;
+  landmarkId: string;
+  gameState: GameState;
+  onComplete: (coinsEarned: number) => void;
   onBack: () => void;
 }
 
-export default function AdventureScreen({ landmark, onComplete, onBack }: AdventureScreenProps) {
+export default function AdventureScreen({ landmarkId, onComplete, onBack }: AdventureScreenProps) {
   const [stage, setStage] = useState<'intro' | 'game' | 'complete'>('intro');
+  
+  const landmark = landmarks.find(l => l.id === landmarkId);
+  
+  if (!landmark) {
+    return (
+      <div className="min-h-screen parchment-bg flex items-center justify-center">
+        <p>Landmark not found</p>
+      </div>
+    );
+  }
 
   const handleGameComplete = () => {
     setStage('complete');
+  };
+
+  const handleClaimBadge = () => {
+    onComplete(10); // Award 10 coins per completed landmark
   };
 
   const renderGame = () => {
@@ -61,7 +77,12 @@ export default function AdventureScreen({ landmark, onComplete, onBack }: Advent
   };
 
   return (
-    <div className="min-h-screen parchment-bg">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen parchment-bg"
+    >
       {/* Header */}
       <div 
         className="relative h-48 flex items-end p-6"
@@ -182,7 +203,7 @@ export default function AdventureScreen({ landmark, onComplete, onBack }: Advent
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onComplete}
+              onClick={handleClaimBadge}
               className="btn btn-primary text-lg px-8 py-4"
             >
               Claim Your Badge!
@@ -190,6 +211,6 @@ export default function AdventureScreen({ landmark, onComplete, onBack }: Advent
           </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
