@@ -1,158 +1,111 @@
 import { motion } from 'framer-motion';
-import Mascot from './Mascot';
+import { MapPin, Users, Trophy, BookOpen } from 'lucide-react';
 
 interface WelcomeScreenProps {
   onStart: () => void;
-  hasExistingProgress: boolean;
-  explorerName: string;
+  hasExistingTeam: boolean;
+  teamName?: string;
 }
 
-export default function WelcomeScreen({ onStart, hasExistingProgress, explorerName }: WelcomeScreenProps) {
+export default function WelcomeScreen({ onStart, hasExistingTeam, teamName }: WelcomeScreenProps) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 parchment-bg">
-      {/* Decorative columns */}
-      <div className="fixed left-4 top-0 bottom-0 w-8 bg-gradient-to-r from-muted to-transparent opacity-50" />
-      <div className="fixed right-4 top-0 bottom-0 w-8 bg-gradient-to-l from-muted to-transparent opacity-50" />
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center max-w-lg"
-      >
-        {/* Laurel wreath decoration */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-          className="mb-4"
-        >
-          <svg viewBox="0 0 200 60" className="w-48 h-16 mx-auto" aria-hidden="true">
-            <path
-              d="M20 50 Q50 20 100 30 Q150 20 180 50"
-              fill="none"
-              stroke="#7B9E6B"
-              strokeWidth="3"
-            />
-            <path
-              d="M30 45 Q60 25 100 35 Q140 25 170 45"
-              fill="none"
-              stroke="#7B9E6B"
-              strokeWidth="2"
-            />
-            {/* Left leaves */}
-            {[0, 1, 2, 3, 4].map((i) => (
-              <ellipse
-                key={`left-${i}`}
-                cx={25 + i * 15}
-                cy={48 - i * 3}
-                rx="8"
-                ry="4"
-                fill="#7B9E6B"
-                transform={`rotate(${-30 + i * 5} ${25 + i * 15} ${48 - i * 3})`}
-              />
-            ))}
-            {/* Right leaves */}
-            {[0, 1, 2, 3, 4].map((i) => (
-              <ellipse
-                key={`right-${i}`}
-                cx={175 - i * 15}
-                cy={48 - i * 3}
-                rx="8"
-                ry="4"
-                fill="#7B9E6B"
-                transform={`rotate(${30 - i * 5} ${175 - i * 15} ${48 - i * 3})`}
-              />
-            ))}
-          </svg>
-        </motion.div>
-
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-2 text-shadow-sm"
-        >
-          Rome Quest
-        </motion.h1>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Hero Section */}
+      <div className="relative flex-1 flex flex-col justify-center px-6 py-12 lg:px-8">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1920&q=80)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
         
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-xl md:text-2xl text-primary font-semibold mb-6"
-        >
-          Junior Explorer
-        </motion.p>
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-primary font-medium tracking-widest uppercase text-sm mb-4">
+              Cultural Exploration Reimagined
+            </p>
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-6 leading-tight">
+              City<span className="text-primary">Quest</span>
+            </h1>
+            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+              Embark on a sophisticated journey through Rome&apos;s rich tapestry of history, 
+              art, and culture. Challenge your group with curated quests that transform 
+              sightseeing into an intellectual adventure.
+            </p>
+          </motion.div>
 
-        {/* Mascot */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, type: 'spring' }}
-          className="flex justify-center mb-6"
-        >
-          <Mascot size="large" />
-        </motion.div>
-
-        {/* Mascot speech */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-card rounded-xl p-4 mb-8 roman-border relative"
-        >
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-card" />
-          <p className="text-lg text-card-foreground font-medium">
-            Ciao! I&apos;m Marco the Map Mouse!
-          </p>
-          <p className="text-muted-foreground mt-2">
-            {hasExistingProgress 
-              ? `Welcome back, ${explorerName}! Continue your adventure!`
-              : 'Ready to explore ancient Rome? Collect badges, solve clues, and become a true Rome Explorer!'}
-          </p>
-        </motion.div>
-
-        {/* Start button */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onStart}
-          className="btn btn-primary text-xl px-10 py-4 coin-shadow"
-        >
-          {hasExistingProgress ? 'Continue Adventure!' : 'Start Your Adventure!'}
-        </motion.button>
-
-        {/* Decorative coins */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
-          className="flex justify-center gap-4 mt-8"
-        >
-          {[1, 2, 3].map((i) => (
-            <motion.div
-              key={i}
-              animate={{ 
-                y: [0, -5, 0],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                delay: i * 0.2 
-              }}
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xs coin-shadow"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <button
+              onClick={onStart}
+              className="group px-8 py-4 bg-primary text-primary-foreground font-medium rounded-md transition-all hover:bg-primary/90 flex items-center gap-3"
             >
-              R
-            </motion.div>
-          ))}
-        </motion.div>
+              {hasExistingTeam ? `Continue as ${teamName}` : 'Begin Your Journey'}
+              <MapPin className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="relative z-10 border-t border-border bg-card/50"
+      >
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={<Users className="w-6 h-6" />}
+              title="Team Competition"
+              description="Form your group and compete against others exploring the same city. Track scores and unlock achievements together."
+            />
+            <FeatureCard
+              icon={<BookOpen className="w-6 h-6" />}
+              title="Deep Cultural Content"
+              description="Go beyond surface-level facts with rich historical context, architectural insights, and curated reading recommendations."
+            />
+            <FeatureCard
+              icon={<Trophy className="w-6 h-6" />}
+              title="Gamified Discovery"
+              description="Complete challenges, earn points, and unlock achievements as you explore. Learning has never been this engaging."
+            />
+          </div>
+        </div>
       </motion.div>
+
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-border py-6 px-6 text-center">
+        <p className="text-muted-foreground text-sm">
+          Currently featuring <span className="text-primary font-medium">Rome, Italy</span> 
+          {' '}&middot;{' '}More cities coming soon
+        </p>
+      </footer>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+  return (
+    <div className="group p-6 rounded-lg bg-card border border-border hover:border-primary/30 transition-colors">
+      <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors">
+        {icon}
+      </div>
+      <h3 className="font-display text-xl font-semibold text-foreground mb-2">{title}</h3>
+      <p className="text-muted-foreground leading-relaxed">{description}</p>
     </div>
   );
 }

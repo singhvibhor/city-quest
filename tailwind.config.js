@@ -31,32 +31,17 @@ export default {
         },
         border: 'var(--border)',
         ring: 'var(--ring)',
+        destructive: 'var(--destructive)',
+        success: 'var(--success)',
       },
       fontFamily: {
-        sans: ['var(--font-sans)'],
-        display: ['var(--font-display)'],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
-      },
-      animation: {
-        'float': 'float 3s ease-in-out infinite',
-        'bounce-slow': 'bounce 2s infinite',
-        'pulse-slow': 'pulse 3s infinite',
-        'wiggle': 'wiggle 1s ease-in-out infinite',
-        'spin-slow': 'spin 8s linear infinite',
-      },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        wiggle: {
-          '0%, 100%': { transform: 'rotate(-3deg)' },
-          '50%': { transform: 'rotate(3deg)' },
-        },
       },
     },
   },
